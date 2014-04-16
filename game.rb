@@ -16,6 +16,7 @@ class Game
 		@stack = []
 		@score = 0
 		@playing = false
+		@bust = false
 	end
 
 	def loop
@@ -46,7 +47,7 @@ class Game
 						puts die.number
 					end
 
-					puts "The top of your stack is #{@stack[0]}"
+					puts "The top of your stack is #{@stack[0].number}"
 				end			
 			else
 				puts "I don't recognize the command \"#{input}.\""
@@ -54,7 +55,8 @@ class Game
 
 		end
 
-		puts "Your total is #{calculate_score}! Thanks for playing!"
+		puts "Your total is #{calculate_score}!" if !bust
+		puts "Thanks for playing!"
 	end
 
 	def stop_game
@@ -71,6 +73,10 @@ class Game
 		else
 			@stack[0].number
 		end
+	end
+
+	def bust
+		@bust = true
 	end
 
 	def roll_dice
@@ -92,6 +98,7 @@ class Game
 		valid_dice = sorted_dice.find_all{|die| die.number >= top_of_stack}.take(2)
 		if valid_dice.length  == 0 then
 			puts "BUST!"
+			bust
 			stop_game
 		else
 			valid_dice.each{|valid_die|
