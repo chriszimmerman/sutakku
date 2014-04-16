@@ -19,52 +19,42 @@ class Game
 	end
 
 	def loop
-		@playing = true
-	
+		@playing = true	
 		puts "Game start!"
 
 		while @playing do
 			puts "What do you want to do? Valid commands: roll, look, stop"
 			input = gets.chomp
 
-			if input == "stop" then
+			case input
+			when "stop"
 				stop_game
-			elsif input == "roll" then
+			when "roll"
 				if @dice_left.length == 0 then
 					@playing = false
-					@score = calculate_score + 100
+					@score = calculate_score
 					puts "STAKKU! You earn 100 bonus points!"
 				else
-					roll_dice = []
-					3.times do
-						if @dice_left.length > 0 then
-							roll_dice.push(@dice_left.pop)
-						end
-					end	
-					
-					puts "Here are your rolls:"
-					roll_dice.each do |die|
-						die.roll
-						puts die.roll					
-					end
-
-
+					roll_dice
 				end
-			elsif input == "look" then
+			when "look"
 				puts "Here is your stack:"
 				if @stack.length == 0 then
 					puts "Empty Stack\n"
-				end
+				else
+					@stack.each do |die|
+						puts die.number
+					end
 
-				@stack.each do |die|
-					puts die.number
-				end
+					puts "The top of your stack is #{@stack[0]}"
+				end			
 			else
 				puts "I don't recognize the command \"#{input}.\""
 			end
+
 		end
 
-		puts "Your total is #{@score}! Thanks for playing!"
+		puts "Your total is #{calculate_score}! Thanks for playing!"
 	end
 
 	def stop_game
@@ -72,10 +62,46 @@ class Game
 	end
 
 	def calculate_score
-		@stack.length * @stack[0]
+		@stack.length * @stack[0].number
 	end
 
-	def take_dice dice
-		
+	def top_of_stack
+		if @stack.length == 0 then
+			0
+		else
+			@stack[0].number
+		end
+	end
+
+	def roll_dice
+		dice = []
+		3.times do
+			if @dice_left.length > 0 then
+				dice.push(@dice_left.pop)
+			end
+		end	
+					
+		puts "Here are your rolls:"
+		dice.each do |die|
+			die.roll
+			puts die.roll					
+		end
+
+		sorted_dice = dice.sort
+	
+		valid_dice = sorted_dice.find_all{|die| die.number >= top_of_stack}.take(2)
+		if valid_dice.length  == 0 then
+			puts "BUST!"
+			stop_game
+		else
+			valid_dice.each{|valid_die|
+				@stack.unshift(valid_die)
+				sorted_dice.delete(valid_die)
+			}
+
+			sorted_dice.each{|die_left|
+				@dice_left.push(die_left)
+			}
+		end
 	end
 end
