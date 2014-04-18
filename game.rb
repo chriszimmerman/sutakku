@@ -33,8 +33,7 @@ class Game
 			when "roll"
 				if @dice_left.length == 0 then
 					@playing = false
-					@score = calculate_score
-					puts "STAKKU! You earn 100 bonus points!"
+					puts "STAKKU! You earn 100 bonus points!\n"
 				else
 					roll_dice
 				end
@@ -64,7 +63,8 @@ class Game
 	end
 
 	def calculate_score
-		@stack.length * @stack[0].number
+		bonus = @dice_left.length > 0 ? 100 : 0
+		@stack.length * @stack[0].number + bonus
 	end
 
 	def top_of_stack
@@ -87,11 +87,12 @@ class Game
 			end
 		end	
 					
-		puts "Here are your rolls:"
+		puts "Here are your rolls:\n\n"
 		dice.each do |die|
 			die.roll
 			puts die.roll					
 		end
+		puts "\n"
 
 		sorted_dice = dice.sort
 	
