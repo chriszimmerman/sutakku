@@ -26,7 +26,7 @@ Starting The Game
 
 In order to start the game, run the sutakku.rb ruby script:
 
-ruby sutakku.rb
+	ruby sutakku.rb
 
 This will start the game's loop. When the game starts, the player is prompted to enter
 commands in order to play the game.
