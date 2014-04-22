@@ -33,7 +33,7 @@ class Game
 			when "roll"
 				if @dice_left.length == 0 then
 					@playing = false
-					puts "STAKKU! You earn 100 bonus points!\n"
+					puts "SUTAKKU! You earn 100 bonus points!\n"
 				else
 					roll_dice
 				end
