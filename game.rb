@@ -54,7 +54,7 @@ class Game
 
 		end
 
-		puts "Your total is #{calculate_score}!" if !bust
+		puts "Your total is #{calculate_score}!" if !@bust
 		puts "Thanks for playing!"
 	end
 
@@ -63,7 +63,7 @@ class Game
 	end
 
 	def calculate_score
-		bonus = @dice_left.length > 0 ? 100 : 0
+		bonus = @dice_left.length > 0 ? 0 : 100
 		@stack.length * @stack[0].number + bonus
 	end
 
